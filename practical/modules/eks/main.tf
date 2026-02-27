@@ -32,7 +32,7 @@ data "aws_vpc" "default_vpc" {
 data "aws_subnets" "default_subnets" {
   filter {
     name = "vpc-id"
-    values = [data.AWS_VPC.DEFAULT_VPC.ID]
+    values = [data.aws_vpc.default_vpc.id]
   }
 }
 
@@ -47,11 +47,11 @@ resource "aws_eks_cluster" "my_cluster" {
   version  = "1.34"
 
   vpc_config {
-    subnet_ids = data.aws_subnet.default_subnets.ids
+    subnet_ids = data.aws_subnets.default_subnets.ids
   }
 
   depends_on = [
-    aws_iam_role_policy_attachment.cluster_AmazonEKSClusterPolicy,
+    aws_iam_policy_attachment.cluster_AmazonEKSClusterPolicy,
   ]
   
 timeouts {
