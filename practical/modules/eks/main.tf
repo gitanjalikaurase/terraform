@@ -51,7 +51,7 @@ resource "aws_eks_cluster" "my_cluster" {
   }
 
   depends_on = [
-    aws_iam_policy_attachment.cluster_AmazonEKSClusterPolicy,
+    aws_iam_policy_attachment.cluster-policy-attachment
   ]
   
 timeouts {
