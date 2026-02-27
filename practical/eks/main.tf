@@ -90,7 +90,7 @@ resource "aws_iam_policy_attachment" "cluster-policy-attachment" {
 resource "aws_iam_policy_attachment" "cluster-policy-attachment" {
   name       = "cluster_node_policy_attachment"
   roles      = [aws_iam_role.cluster_role.name]
-  policy_arn = "arn:aws:iam::aws:policy/AmazonEKSClusterPolicy"
+  policy_arn = "arn:aws:iam::aws:policy/AmazonEKS_CNI_Policy"
 }
 
 resource "aws_iam_policy_attachment" "cluster-policy-attachment" {
@@ -100,11 +100,11 @@ resource "aws_iam_policy_attachment" "cluster-policy-attachment" {
 }
 
 resource "aws_eks_node_group" "example" {
-  cluster_name    = aws_eks_cluster.example.name
+  cluster_name    = aws_eks_cluster.my_cluster.name
   node_group_name = "example"
   node_role_arn   = aws_iam_role.node_role.arn
   subnet_ids      = data.aws_subnet.drfault_subnets.ids
-  instance_type = [t3 micro]
+  instance_types = ["t3.micro"]
 
   scaling_config {
     desired_size = var.desired_size
@@ -123,7 +123,7 @@ resource "aws_eks_node_group" "example" {
     aws_iam_policy_attachment.cluster_node_policy_attachment,
     aws_iam_policy_attachment.node_policy_attachment1,
   ]
-  timeout {
+  timeouts {
     create = "20m"
   }
 }
