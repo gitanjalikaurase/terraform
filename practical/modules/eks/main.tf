@@ -103,7 +103,7 @@ resource "aws_eks_node_group" "example" {
   cluster_name    = aws_eks_cluster.my_cluster.name
   node_group_name = "example"
   node_role_arn   = aws_iam_role.node_role.arn
-  subnet_ids      = data.aws_subnet.drfault_subnets.ids
+  subnet_ids      = data.aws_subnet.default_subnets.ids
   instance_types = ["t3.micro"]
 
   scaling_config {
@@ -119,9 +119,9 @@ resource "aws_eks_node_group" "example" {
   # Ensure that IAM Role permissions are created before and deleted after EKS Node Group handling.
   # Otherwise, EKS will not be able to properly delete EC2 Instances and Elastic Network Interfaces.
   depends_on = [
-    aws_iam_policy_attachment.node_policy_attachment,
-    aws_iam_policy_attachment.cluster_node_policy_attachment,
-    aws_iam_policy_attachment.node_policy_attachment1,
+    aws_iam_policy_attachment.cni-node-policy-attachment,
+    aws_iam_policy_attachment.container-node-policy-attachment,
+    aws_iam_policy_attachment.worker-node-policy-attachment,
   ]
   timeouts {
     create = "20m"
