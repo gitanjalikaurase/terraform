@@ -81,22 +81,22 @@ resource "aws_iam_role" "node_role" {
   }
 }
 
-resource "aws_iam_policy_attachment" "cluster-policy-attachment" {
-  name       = "node_policy_attachment"
-  roles      = [aws_iam_role.cluster_role.name]
-  policy_arn = "arn:aws:iam::aws:policy/AmazonEKSClusterPolicy"
+resource "aws_iam_policy_attachment" "worker-node-policy-attachment" {
+  name       = "worker-node-policy-attachment"
+  roles      = [aws_iam_role.node_role.name]
+  policy_arn = "arn:aws:iam::aws:policy/AmazonEKSWorkerNodePolicy"
 }
 
-resource "aws_iam_policy_attachment" "cluster-policy-attachment" {
-  name       = "cluster_node_policy_attachment"
-  roles      = [aws_iam_role.cluster_role.name]
+resource "aws_iam_policy_attachment" "cni-node-policy-attachment" {
+  name       = "cni-node-policy-attachment"
+  roles      = [aws_iam_role.node_role.name]
   policy_arn = "arn:aws:iam::aws:policy/AmazonEKS_CNI_Policy"
 }
 
-resource "aws_iam_policy_attachment" "cluster-policy-attachment" {
-  name       = "node_policy_attachment1"
-  roles      = [aws_iam_role.cluster_role.name]
-  policy_arn = "arn:aws:iam::aws:policy/AmazonEKSClusterPolicy"
+resource "aws_iam_policy_attachment" "container-node-policy-attachment" {
+  name       = "container-node-policy-attachment"
+  roles      = [aws_iam_role.node_role.name]
+  policy_arn = "arn:aws:iam::aws:policy/AmazonEC2ContainerRegistryReadOnly"
 }
 
 resource "aws_eks_node_group" "example" {
